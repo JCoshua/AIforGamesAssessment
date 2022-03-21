@@ -76,10 +76,10 @@ DynamicArray<NodeGraph::Node*> NodeGraph::findPath(Node* start, Node* goal)
 					//Make the item's previous node be the current node
 					currentNode->edges.getItem(i).target->previous = currentNode;
 
-					float hScore = diagonalDistance(currentNode->edges.getItem(i).target, goal, currentNode->edges.getItem(i).cost, currentNode->edges.getItem(i).cost * 1.5f);
+					float hScore = calculateManhattanDistance(currentNode->edges.getItem(i).target, goal);
 					//Make the node's gScore equal to the current gScore plus the cost
 					currentNode->edges.getItem(i).target->fScore = currentNode->gScore + currentNode->edges.getItem(i).cost + hScore;
-
+					currentNode->edges.getItem(i).target->color = 0xFF00000FF;
 				}
 				if (!openedList.contains(currentNode->edges.getItem(i).target))
 				{
@@ -109,7 +109,6 @@ void NodeGraph::drawGraph(Node* start)
 void NodeGraph::drawNode(Node* node, float size)
 {
 	static char buffer[10];
-	sprintf_s(buffer, "%.0f", node->fScore);
 
 	//Draw the circle for the outline
 	DrawCircle((int)node->position.x, (int)node->position.y, size + 1, GetColor(node->color));

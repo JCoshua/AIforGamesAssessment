@@ -22,7 +22,8 @@ public:
 		WALL,
 		MUD,
 		PLAYER,
-		GHOST
+		GHOST,
+		VICTORY
 	};
 
 	/// <summary>
@@ -36,9 +37,9 @@ public:
 		NodeGraph::Node* node = nullptr;
 	};
 
-	static const int WIDTH = 28;
-	static const int HEIGHT = 32;
-	static const int TILE_SIZE = 25;
+	static const int WIDTH = 27;
+	static const int HEIGHT = 31;
+	static const int TILE_SIZE = 26;
 
 public:
 	/// <param name="map">A 2D array of TileKeys arranged height by width</param>

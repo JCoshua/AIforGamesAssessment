@@ -5,6 +5,8 @@
 #include "Transform2D.h"
 #include "MazeScene.h"
 #include "Wall.h"
+#include "Victory.h"
+#include "Engine.h"
 #include "AABBCollider.h"
 #include "Agent.h"
 #include "Collider.h"
@@ -45,5 +47,8 @@ void Player::onCollision(Actor* other)
 		tilePosition = tilePosition - halfTile;
 		//getTransform()->setWorldPostion(getTransform()->getWorldPosition() - getMoveComponent()->getVelocity().getNormalized() * -.05f);
 		applyForce(getCollider()->getCollisionNormal() * -1 * getMoveComponent()->getVelocity().getMagnitude());
+	}
+	if (Victory* victory = dynamic_cast<Victory*>(other)) {
+		Engine::CloseApplication();
 	}
 }
