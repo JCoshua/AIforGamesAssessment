@@ -6,6 +6,7 @@
 #include "PathfindComponent.h"
 #include "MoveComponent.h"
 #include "SpriteComponent.h"
+#include "StateMachineComponent.h"
 
 Ghost::Ghost(float x, float y, float maxSpeed, float maxForce, int color, Maze* maze)
 	: Agent(x, y, "Ghost", maxSpeed, maxForce)
@@ -15,6 +16,8 @@ Ghost::Ghost(float x, float y, float maxSpeed, float maxForce, int color, Maze* 
 
 	m_pathfindComponent = new PathfindComponent(maze);
 	m_pathfindComponent->setColor(color);
+
+	m_stateMachine = addComponent<StateMachineComponent>();
 	addComponent(m_pathfindComponent);
 	addComponent(new SpriteComponent("Images/enemy.png"));
 }

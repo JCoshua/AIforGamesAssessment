@@ -3,6 +3,7 @@
 #include "Transform2D.h"
 #include "Agent.h"
 #include "MoveComponent.h"
+#include "StateMachineComponent.h"
 
 void PathfindComponent::start()
 {
@@ -13,7 +14,7 @@ void PathfindComponent::start()
 void PathfindComponent::update(float deltaTime)
 {
 	//Don't update if disabled or no target
-	if (!getEnabled() || !m_target)
+	if (!m_target)
 		return;
 
 	//Find the positions and tiles of the owner and target
@@ -76,5 +77,45 @@ void PathfindComponent::updatePath(MathLibrary::Vector2 destination)
 
 MathLibrary::Vector2 PathfindComponent::findDestination()
 {
-	return m_target->getTransform()->getWorldPosition();
+	StateMachineComponent* state = getOwner()->getComponent<StateMachineComponent>();
+	NodeGraph::Node* targetNode = new NodeGraph::Node();
+	targetNode->walkable = false;
+
+	//If the ghost is currently in the Wander State
+	if (state->getCurrentState() == WANDER)
+	{
+		if (m_path.getLength() != 0)
+			return m_previous->position;
+
+		//While the target is not a walkable node
+		while (!targetNode->walkable)
+		{
+			//Find a random location
+			float randNodeX = rand() % (int)(m_maze->getSize().x * m_maze->TILE_SIZE);
+			float randNodeY = rand() % (int)(m_maze->getSize().y * m_maze->TILE_SIZE);
+
+			//Make the target node equal to the node at the random location
+			targetNode = m_maze->getTile({ randNodeX, randNodeY }).node;
+			targetNode->walkable = m_maze->getTile({ randNodeX, randNodeY }).node->walkable;
+		}
+	}
+	else if (state->getCurrentState() == PATROL)
+	{
+		if (m_path.getLength() != 0)
+			return m_previous->position;
+
+		float distanceFromV1 = (m_previous->position - MathLibrary::Vector2(13 * m_maze->TILE_SIZE, 0)).getMagnitude();
+		float distanceFromV2 = (m_previous->position - MathLibrary::Vector2(13 * m_maze->TILE_SIZE, (m_maze->HEIGHT - 1) * m_maze->TILE_SIZE)).getMagnitude();
+		if (distanceFromV1 < distanceFromV2)
+			targetNode = m_maze->getTile({ 13 * m_maze->TILE_SIZE, 0 }).node;
+		else
+			targetNode = m_maze->getTile({ 13 * m_maze->TILE_SIZE, (m_maze->HEIGHT - 6) * m_maze->TILE_SIZE }).node;
+	}
+	else
+	{
+		targetNode = m_maze->getTile(m_target->getTransform()->getWorldPosition()).node;
+	}
+
+	m_previous = targetNode;
+	return targetNode->position;
 }

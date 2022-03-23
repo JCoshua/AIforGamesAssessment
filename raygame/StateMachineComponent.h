@@ -3,8 +3,8 @@
 
 enum State
 {
-	IDLE,
 	WANDER,
+	PATROL,
 	SEEK
 };
 
@@ -24,10 +24,7 @@ public:
 
 private:
 	State m_currentState;
-	SeekComponent* m_seekComponent;
-	WanderComponent* m_wanderComponent;
-	float m_seekForce;
-	float m_wanderForce;
-	float m_seekRange = 300;
+	float m_patrolRange = 300;
+	float m_patrolTime = 0;
 };
 

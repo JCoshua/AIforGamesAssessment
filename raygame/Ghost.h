@@ -3,6 +3,7 @@
 
 class Maze;
 class PathfindComponent;
+class StateMachineComponent;
 
 class Ghost : public Agent
 {
@@ -30,8 +31,10 @@ public:
 
 private:
 	PathfindComponent* m_pathfindComponent;
+	StateMachineComponent* m_stateMachine;
 	Maze* m_maze;
 
 	Actor* m_target = nullptr;
+	MathLibrary::Vector2 m_targetPos;
 };
 

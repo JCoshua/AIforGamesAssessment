@@ -7,5 +7,5 @@ MathLibrary::Vector2 InputComponent::getMoveAxis()
 	float moveDirectionY = -RAYLIB_H::IsKeyDown(RAYLIB_H::KEY_W) + RAYLIB_H::IsKeyDown(RAYLIB_H::KEY_S);
 
 	//Return a new vector representing the move direction
-	return MathLibrary::Vector2( moveDirectionX, moveDirectionY);
+	return MathLibrary::Vector2(moveDirectionX, moveDirectionY);
 }

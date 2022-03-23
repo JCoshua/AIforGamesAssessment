@@ -3,6 +3,7 @@
 class InputComponent;
 class MoveComponent;
 class SpriteComponent;
+class StateMachineComponent;
 
 class Player :
 	public Agent
@@ -17,6 +18,7 @@ public:
 
 private:
 	SpriteComponent* m_spriteComponent;
+	StateMachineComponent* m_StateMachine;
 	InputComponent* m_input;
 };
 

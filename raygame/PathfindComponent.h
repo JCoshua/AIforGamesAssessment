@@ -51,6 +51,8 @@ public:
 	int getColor() { return m_color; }
 	void setColor(int color) { m_color = color; }
 
+	void onEnabled() override { m_needPath = true; }
+
 protected:
 	virtual MathLibrary::Vector2 findDestination();
 
@@ -58,6 +60,7 @@ private:
 	Maze* m_maze;
 	DynamicArray<NodeGraph::Node*> m_path;
 	Agent* m_owner;
+	NodeGraph::Node* m_previous;
 	Actor* m_target = nullptr;
 	bool m_needPath = true;
 	int m_color = 0xFFFFFFFF;
