@@ -39,11 +39,13 @@ void Ghost::update(float deltaTime)
 	{
 		getComponent<PathfindComponent>()->setEnabled(false);
 		getComponent<WanderComponent>()->setSteeringForce(200);
+		m_collidesWithWalls = true;
 	}
 	else if(RAYLIB_H::IsKeyPressed(RAYLIB_H::KEY_TAB) && getComponent<PathfindComponent>()->getEnabled() == false)
 	{
 		getComponent<PathfindComponent>()->setEnabled(true);
 		getComponent<WanderComponent>()->setSteeringForce(0);
+		m_collidesWithWalls = false;
 	}
 }
 
@@ -54,6 +56,9 @@ void Ghost::draw()
 
 void Ghost::onCollision(Actor* other)
 {
+	if (!m_collidesWithWalls)
+		return;
+
 	if (Wall* wall = dynamic_cast<Wall*>(other)) {
 		MathLibrary::Vector2 halfTile = { Maze::TILE_SIZE / 2.0f, Maze::TILE_SIZE / 2.0f };
 		MathLibrary::Vector2 position = getTransform()->getWorldPosition();

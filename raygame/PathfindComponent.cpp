@@ -86,12 +86,17 @@ MathLibrary::Vector2 PathfindComponent::findDestination()
 		if (m_path.getLength() != 0)
 			return m_previous->position;
 
-		float distanceFromV1 = (m_previous->position - MathLibrary::Vector2(13 * m_maze->TILE_SIZE, 0)).getMagnitude();
-		float distanceFromV2 = (m_previous->position - MathLibrary::Vector2(13 * m_maze->TILE_SIZE, (m_maze->HEIGHT - 1) * m_maze->TILE_SIZE)).getMagnitude();
-		if (distanceFromV1 < distanceFromV2)
-			targetNode = m_maze->getTile({ 13 * m_maze->TILE_SIZE, 0 }).node;
-		else
-			targetNode = m_maze->getTile({ 13 * m_maze->TILE_SIZE, (m_maze->HEIGHT - 6) * m_maze->TILE_SIZE }).node;
+		//While the target is not a walkable node
+		while (!targetNode->walkable)
+		{
+			//Find a random location
+			float randNodeX = rand() % (int)(m_maze->getSize().x * m_maze->TILE_SIZE);
+			float randNodeY = rand() % (int)(m_maze->getSize().y * m_maze->TILE_SIZE);
+
+			//Make the target node equal to the node at the random location
+			targetNode = m_maze->getTile({ randNodeX, randNodeY }).node;
+			targetNode->walkable = m_maze->getTile({ randNodeX, randNodeY }).node->walkable;
+		}
 	}
 	else if(state->getCurrentState() == SEEK || !m_previous)
 	{

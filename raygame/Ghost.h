@@ -36,5 +36,6 @@ private:
 
 	Actor* m_target = nullptr;
 	MathLibrary::Vector2 m_targetPos;
+	bool m_collidesWithWalls = false;
 };
 
