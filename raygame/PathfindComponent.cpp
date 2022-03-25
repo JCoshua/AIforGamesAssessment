@@ -81,25 +81,7 @@ MathLibrary::Vector2 PathfindComponent::findDestination()
 	NodeGraph::Node* targetNode = new NodeGraph::Node();
 	targetNode->walkable = false;
 
-	//If the ghost is currently in the Wander State
-	if (state->getCurrentState() == WANDER)
-	{
-		if (m_path.getLength() != 0)
-			return m_previous->position;
-
-		//While the target is not a walkable node
-		while (!targetNode->walkable)
-		{
-			//Find a random location
-			float randNodeX = rand() % (int)(m_maze->getSize().x * m_maze->TILE_SIZE);
-			float randNodeY = rand() % (int)(m_maze->getSize().y * m_maze->TILE_SIZE);
-
-			//Make the target node equal to the node at the random location
-			targetNode = m_maze->getTile({ randNodeX, randNodeY }).node;
-			targetNode->walkable = m_maze->getTile({ randNodeX, randNodeY }).node->walkable;
-		}
-	}
-	else if (state->getCurrentState() == PATROL)
+	if (state->getCurrentState() == PATROL && m_previous)
 	{
 		if (m_path.getLength() != 0)
 			return m_previous->position;
@@ -111,7 +93,7 @@ MathLibrary::Vector2 PathfindComponent::findDestination()
 		else
 			targetNode = m_maze->getTile({ 13 * m_maze->TILE_SIZE, (m_maze->HEIGHT - 6) * m_maze->TILE_SIZE }).node;
 	}
-	else
+	else if(state->getCurrentState() == SEEK || !m_previous)
 	{
 		targetNode = m_maze->getTile(m_target->getTransform()->getWorldPosition()).node;
 	}

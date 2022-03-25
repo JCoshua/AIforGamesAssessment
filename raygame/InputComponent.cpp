@@ -1,4 +1,6 @@
 #include "InputComponent.h"
+#include "Engine.h"
+#include "Ghost.h"
 
 MathLibrary::Vector2 InputComponent::getMoveAxis()
 {

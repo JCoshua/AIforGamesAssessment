@@ -7,6 +7,7 @@
 #include "MoveComponent.h"
 #include "SpriteComponent.h"
 #include "StateMachineComponent.h"
+#include "WanderComponent.h"
 #include "AABBCollider.h"
 
 Ghost::Ghost(float x, float y, float maxSpeed, float maxForce, int color, Maze* maze)
@@ -18,6 +19,7 @@ Ghost::Ghost(float x, float y, float maxSpeed, float maxForce, int color, Maze* 
 	m_pathfindComponent = new PathfindComponent(maze);
 	m_pathfindComponent->setColor(color);
 
+	addComponent(new WanderComponent(100, 5, 0));
 	m_stateMachine = addComponent<StateMachineComponent>();
 	addComponent(m_pathfindComponent);
 	addComponent(new SpriteComponent("Images/enemy.png"));
@@ -32,6 +34,17 @@ Ghost::~Ghost()
 void Ghost::update(float deltaTime)
 {
 	Agent::update(deltaTime);
+
+	if (RAYLIB_H::IsKeyPressed(RAYLIB_H::KEY_TAB) && getComponent<PathfindComponent>()->getEnabled() == true)
+	{
+		getComponent<PathfindComponent>()->setEnabled(false);
+		getComponent<WanderComponent>()->setSteeringForce(200);
+	}
+	else if(RAYLIB_H::IsKeyPressed(RAYLIB_H::KEY_TAB) && getComponent<PathfindComponent>()->getEnabled() == false)
+	{
+		getComponent<PathfindComponent>()->setEnabled(true);
+		getComponent<WanderComponent>()->setSteeringForce(0);
+	}
 }
 
 void Ghost::draw()
