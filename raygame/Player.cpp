@@ -48,7 +48,6 @@ void Player::onCollision(Actor* other)
 		//getTransform()->setWorldPostion(getTransform()->getWorldPosition() - getMoveComponent()->getVelocity().getNormalized() * -.05f);
 		applyForce(getCollider()->getCollisionNormal() * -1 * getMoveComponent()->getVelocity().getMagnitude());
 	}
-	if (Victory* victory = dynamic_cast<Victory*>(other)) {
+	if (other->getName() == "Victory" || other->getName() == "Ghost")
 		Engine::CloseApplication();
-	}
 }
