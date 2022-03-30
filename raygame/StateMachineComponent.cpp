@@ -20,6 +20,7 @@ void StateMachineComponent::update(float deltaTime)
 
 	MathLibrary::Vector2 direction = target->getTransform()->getWorldPosition() - getOwner()->getTransform()->getWorldPosition();
 	float fov = MathLibrary::Vector2::dotProduct(direction.getNormalized(), getOwner()->getTransform()->getForward());
+
 	switch (m_currentState)
 	{
 	case PATROL:

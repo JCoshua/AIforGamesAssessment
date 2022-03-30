@@ -51,12 +51,15 @@ DynamicArray<NodeGraph::Node*> NodeGraph::findPath(Node* start, Node* goal)
 {
 	resetGraphScore(start);
 	//Insert algorithm here
+
+	//Creates the opened and closed list
 	DynamicArray<NodeGraph::Node*> openedList;
 	DynamicArray<NodeGraph::Node*> closedList;
 	Node* currentNode = start;
 	openedList.addItem(currentNode);
 	start->color = 0x00FF00FF;
 
+	//While there is a node in the opened list
 	while (openedList.getLength() > 0)
 	{
 		//Sort the opened List
@@ -93,6 +96,7 @@ DynamicArray<NodeGraph::Node*> NodeGraph::findPath(Node* start, Node* goal)
 		openedList.remove(currentNode);
 		closedList.addItem(currentNode);
 
+		//If the current node is the goal, return the path from the start to the goal
 		if(currentNode == goal)
 			return reconstructPath(start, goal);
 	}

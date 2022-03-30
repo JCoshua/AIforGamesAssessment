@@ -81,8 +81,10 @@ MathLibrary::Vector2 PathfindComponent::findDestination()
 	NodeGraph::Node* targetNode = new NodeGraph::Node();
 	targetNode->walkable = false;
 
+	//If the current state of the agent is patrol
 	if (state->getCurrentState() == PATROL && m_previous)
 	{
+		//If the path isn't empty, continue to follow the path
 		if (m_path.getLength() != 0)
 			return m_previous->position;
 

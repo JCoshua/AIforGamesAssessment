@@ -35,12 +35,14 @@ void Ghost::update(float deltaTime)
 {
 	Agent::update(deltaTime);
 
+	//Sets the ghost to Wander Behavior
 	if (RAYLIB_H::IsKeyPressed(RAYLIB_H::KEY_TAB) && getComponent<PathfindComponent>()->getEnabled() == true)
 	{
 		getComponent<PathfindComponent>()->setEnabled(false);
 		getComponent<WanderComponent>()->setSteeringForce(200);
 		m_collidesWithWalls = true;
 	}
+	//Sets the ghost to PathfindingBehavior
 	else if(RAYLIB_H::IsKeyPressed(RAYLIB_H::KEY_TAB) && getComponent<PathfindComponent>()->getEnabled() == false)
 	{
 		getComponent<PathfindComponent>()->setEnabled(true);
@@ -56,6 +58,7 @@ void Ghost::draw()
 
 void Ghost::onCollision(Actor* other)
 {
+	//If the ghost should not collide with walls, do not preform collision
 	if (!m_collidesWithWalls)
 		return;
 
